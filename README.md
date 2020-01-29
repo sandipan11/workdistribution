@@ -60,3 +60,5 @@ Enable Lombok:
 2. Go to command Prompt and run it (Example: java -jar lombok-1.16.10.jar). A window should appear, browse to your eclipse.exe location.
 3. Click on install.
 4. Launch Eclipse, update project configuration on all projects
+
+Please import WorkDistribution.postman_collection.json in postman to test the API

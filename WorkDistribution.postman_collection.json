@@ -1,0 +1,82 @@
+{
+	"info": {
+		"_postman_id": "eff58895-1ab6-42e4-b0fc-a53f226f0289",
+		"name": "WorkDistribution",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "testTaskCreationAPI",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"task_details\":\n\t\t\t\t{\n\t\t\t\t\t\"name\":\"TestTask35\",\n\t\t\t\t\t\"description\": \"Test Task 35\",\n\t\t\t\t\t\"status\": \"Created\",\n\t\t\t\t\t\"priority\": 1\n\t\t\t\t\n\t\t\t\t},\n\t\"required_skill_id\": [1,2,3]\t\t\t\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/task/create?request_id=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"task",
+						"create"
+					],
+					"query": [
+						{
+							"key": "request_id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "testTaskUpdateAPI",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"task_details\":\n\t\t\t\t{\n\t\t\t\t\t\"task_id\":17,\n\t\t\t\t\t\"status\": \"Completed\"\n\t\t\t\t}\t\t\t\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/task/update?request_id=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"task",
+						"update"
+					],
+					"query": [
+						{
+							"key": "request_id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
