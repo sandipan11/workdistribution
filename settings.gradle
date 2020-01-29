@@ -1,0 +1,14 @@
+rootProject.name = 'workdistribution'
+
+gradle.ext {
+	assertjversion = '3.9.0'
+	junitVersion = '4.12'
+	springframeworkBootVersion = '2.2.0.RELEASE'
+	mockitoAllversion = '1.10.19'
+	mockitoVersion = '1.10.19'
+	wiremockVersion = '2.8.0'
+	slf4jVersion = '1.7.29'
+	appi1cationVersion = '1.0.0'
+	jacksonversion = '2.2.2'
+	jettyVersion = '9.4.19.v20190610'
+}

@@ -1,0 +1,64 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url "http://repo.spring.io/libs-snapshot" }
+    }
+    dependencies {
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:${gradle.springframeworkBootVersion}"
+		}
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.2.0.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+	id 'java'
+}
+
+//apply from: "jacoco.gradle"
+
+group = 'com.freedom'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	jcenter()
+	mavenCentral()
+	maven { url "http://repo.spring.io/libs-snapshot" }
+}
+
+dependencies {
+
+	
+	//compile ("org.springframework.boot:spring-boot-starter-test:${gradle.springframeworkBootVersion} ") { exclude group: 'org.mockito', module: 'mokito-core'}
+	
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testCompile 'com.jayway.jsonpath:json-path'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		//exclude group: 'org.mokito', module: 'mokito-core'
+	}
+	
+	testCompile ("org.mockito:mockito-core:${gradle.mockitoVersion}")
+	testCompile ("org.mockito:mockito-all:${gradle.mockitoAllversion}")
+	
+   	testCompile ("junit:junit:${gradle.junitVersion}")
+    testCompile ("org.assertj:assertj-core:${gradle.assertjversion}")
+    //testCompile ("org.springframework.boot:spring-boot-starter-test:${gradle.springframeworkBootVersion} ") { exclude group: 'org.mockito', module: 'mockito-core' }
+		
+	compileOnly 'org.projectlombok:lombok:1.18.8'
+	annotationProcessor 'org.projectlombok:lombok:1.18.8'
+	
+	runtimeOnly 'mysql:mysql-connector-java'
+	testCompile "com.github.tomakehurst:wiremock-jre8:2.25.1"
+	
+	//jacocoAnt 'org.jacoco:org.jacoco.ant:0.8.1:nodeps'
+	//jacocoAgent 'org.jacoco:org.jacoco.agent:0.8.1'
+}
+/*
+test {
+	useJUnitPlatform()
+}*/
+
+mainClassName = 'com.freedom.workdistribution.WorkdistributionApplication'
