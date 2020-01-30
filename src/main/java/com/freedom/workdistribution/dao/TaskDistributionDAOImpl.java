@@ -42,16 +42,28 @@ public class TaskDistributionDAOImpl {
 	private final String UPDATE_TASK_SQL = "UPDATE TASK SET status = :status, last_modified_date = :last_modified_date WHERE id = :task_id";
 	private final String UPDATE_TASK_ASSIGNMENT_ENDDATE_SQL = "UPDATE TASK_ASSIGNMENT SET end_date = :end_date, last_modified_date = :last_modified_date WHERE task_id = :task_id";
 	
-	private final String SELECT_AGENT_SQL = "SELECT F.agent_id, F.task_id,F.priority,F.start_date,agent.agent_name FROM " +
-											  "(SELECT E.agent_id, E.task_id, E.priority, E.start_date FROM " + 
-												"(SELECT D.agent_id, D.task_id, task.priority, task.id, IFNULL(D.start_date, NOW()) AS START_DATE FROM " + 
-													"(SELECT C.agent_id, task_assignment.task_id, task_assignment.start_date, task_assignment.end_date FROM " + 
-														"(SELECT agent_id from " + 
-															"(SELECT agent_id , count(*) from (select agent_id,skill_id from agent_skill_rel where skill_id in (:skill_ids) ) A group by agent_id having count(*) > :skill_ids_count) B) C " + 
-															"LEFT JOIN task_assignment ON C.agent_id = task_assignment.agent_id and task_assignment.end_date IS NULL) D " + 
-														"JOIN task ON D.task_id = task.id and task.priority < 1 ORDER By D.start_date) E ORDER BY E.start_date DESC LIMIT 1 ) F " +
-													"LEFT JOIN agent ON F.agent_id = agent.agent_id";
-
+	private final String SELECT_AGENT_SQL = "SELECT HH.agent_id, HH.task_id,HH.priority,HH.start_date,agent.agent_name FROM " + 
+											"(SELECT  GG.agent_id, GG.task_id, GG.priority, GG.start_date from " + 
+											"(SELECT  FF.agent_id, FF.task_id, IFNULL(FF.priority, -1) AS priority, FF.start_date from  " + 
+											"(SELECT AA.agent_id, AA.task_id, AA.priority, AA.start_date from " + 
+											"(SELECT D.agent_id, D.task_id, task.priority, IFNULL(D.start_date, NOW()) AS start_date FROM  " + 
+											"(SELECT C.agent_id, task_assignment.task_id, task_assignment.start_date, task_assignment.end_date FROM " + 
+											"(SELECT agent_id from  " + 
+											"(SELECT agent_id , count(*) from (select agent_id,skill_id from agent_skill_rel where skill_id in (:skill_ids) ) A group by agent_id having count(*) > :skill_ids_count) B) C " + 
+											"LEFT JOIN task_assignment ON C.agent_id = task_assignment.agent_id and task_assignment.end_date IS NULL) D " + 
+											"LEFT JOIN task ON D.task_id = task.id  ORDER By D.start_date) AA " + 
+											"INNER JOIN (" + 
+											"	SELECT BB.agent_id, BB.priority from " + 
+												"(SELECT E.agent_id, MAX(E.priority) priority FROM  " + 
+												"(SELECT D.agent_id, D.task_id, task.priority, task.id, IFNULL(D.start_date, NOW()) AS START_DATE FROM  " + 
+												"(SELECT C.agent_id, task_assignment.task_id, task_assignment.start_date, task_assignment.end_date FROM " + 
+												"(SELECT agent_id from  " + 
+												"(SELECT agent_id , count(*) from (select agent_id,skill_id from agent_skill_rel where skill_id in (:skill_ids) ) A group by agent_id having count(*) > :skill_ids_count) B) C " + 
+												"LEFT JOIN task_assignment ON C.agent_id = task_assignment.agent_id and task_assignment.end_date IS NULL) D " + 
+												"LEFT JOIN task ON D.task_id = task.id  ORDER By D.start_date) E group by E.agent_id) BB " + 
+												") F ON AA.agent_id = F.agent_id WHERE ( AA.priority = F.priority OR AA.priority IS NULL OR F.priority IS NULL )) FF  " + 
+											") GG  WHERE GG.priority <1 ORDER By GG.start_date DESC LIMIT 1) HH " + 
+											"LEFT JOIN agent ON HH.agent_id = agent.agent_id "; 
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
